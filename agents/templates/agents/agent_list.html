@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Agents - Cholonto--Rush{% endblock %}
+{% block content %}
+  <h1 class="mb-3">Third-Party Agents</h1>
+  <div class="mb-3">
+    <button id="findNearest" class="btn btn-primary">Find nearest agents</button>
+  </div>
+  <div id="nearestContainer" class="mb-4 d-none">
+    <h5>Nearest to you</h5>
+    <ul id="nearestList" class="list-group"></ul>
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr><th>Name</th><th>Center</th><th>Phone</th></tr>
+    </thead>
+    <tbody>
+      {% for a in agents %}
+        <tr>
+          <td>{{ a.user.get_full_name|default:a.user.username }}</td>
+          <td>{{ a.center.name }}</td>
+          <td><a href="tel:{{ a.phone }}">{{ a.phone }}</a></td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="3">No agents listed.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+{% block scripts %}
+<script>
+  document.getElementById('findNearest').onclick=()=>{
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(pos=>{
+      const url=`/agents/nearest/?lat=${pos.coords.latitude}&lng=${pos.coords.longitude}`;
+      fetch(url).then(r=>r.json()).then(data=>{
+        const list=document.getElementById('nearestList');
+        list.innerHTML='';
+        data.agents.forEach(a=>{
+          const li=document.createElement('li');
+          li.className='list-group-item d-flex justify-content-between align-items-center';
+          li.innerHTML=`<div><strong>${a.name}</strong> <span class=\"text-muted\">(${a.center})</span><div class=\"small text-muted\">${a.distance_km} km away</div></div><a class=\"btn btn-sm btn-success\" href=\"tel:${a.phone}\">Call</a>`;
+          list.appendChild(li);
+        });
+        document.getElementById('nearestContainer').classList.remove('d-none');
+      });
+    });
+  };
+</script>
+{% endblock %}
+

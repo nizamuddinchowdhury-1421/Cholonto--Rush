@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Order #{{ order.id }} - Cholonto--Rush{% endblock %}
+{% block content %}
+  <h1 class="mb-3">Order #{{ order.id }}</h1>
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <div><strong>Status:</strong> {{ order.status|title }}</div>
+          <div><strong>Center:</strong> {{ order.center.name|default:'-' }}</div>
+          <div><strong>Assigned agent:</strong>
+            {% if order.assigned_agent %}
+              {{ order.assigned_agent.user.get_full_name|default:order.assigned_agent.user.username }}
+            {% else %}-{% endif %}
+          </div>
+          <div><strong>Created:</strong> {{ order.created_at|date:'Y-m-d H:i' }}</div>
+          <div><strong>Total:</strong> ৳{{ order.total_amount }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Items</h5>
+          <ul class="list-group">
+            {% for it in order.items.all %}
+              <li class="list-group-item d-flex justify-content-between">
+                <span>{{ it.service.name }} × {{ it.quantity }}</span>
+                <span>৳{{ it.line_total }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
