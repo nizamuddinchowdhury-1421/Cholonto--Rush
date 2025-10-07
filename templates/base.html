@@ -28,7 +28,7 @@
           <div class="d-flex">
             {% if user.is_authenticated %}
               <span class="navbar-text me-2">Hi, {{ user.get_username }}</span>
-              <a class="btn btn-outline-light" href="/accounts/logout/">Logout</a>
+              <a class="btn btn-outline-light" href="/accounts/login/">Logout</a>
             {% else %}
               <a class="btn btn-outline-light me-2" href="/accounts/login/">Login</a>
               <a class="btn btn-primary" href="/accounts/signup/">Sign up</a>
