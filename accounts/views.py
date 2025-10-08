@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm, SetPasswordForm
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
@@ -11,7 +12,7 @@ from django.utils.html import strip_tags
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, CustomPasswordChangeForm
 
 
 def signup(request):
@@ -145,8 +146,26 @@ def password_reset_complete(request):
     return render(request, 'registration/password_reset_complete.html')
 
 
-def debug_logout(request):
+@login_required
+def change_password(request):
+    """Change password view"""
+    if request.method == 'POST':
+        form = CustomPasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password has been changed successfully!')
+            return redirect('home')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = CustomPasswordChangeForm(request.user)
+    
+    return render(request, 'registration/change_password.html', {'form': form})
 
+
+def debug_logout(request):
+    """Debug view to test logout functionality"""
     return render(request, 'debug_logout.html', {
         'user_authenticated': request.user.is_authenticated,
         'username': request.user.username if request.user.is_authenticated else 'Anonymous',

@@ -14,7 +14,21 @@
         <div class="card h-100 shadow-sm border-0">
           <div class="card-body p-4">
             <div class="text-center mb-3">
-              <i class="fas fa-wrench fa-2x text-primary"></i>
+              {% if "tire" in s.name|lower or "tyre" in s.name|lower %}
+                <i class="fas fa-circle fa-2x text-danger"></i>
+              {% elif "battery" in s.name|lower %}
+                <i class="fas fa-battery-half fa-2x text-primary"></i>
+              {% elif "oil" in s.name|lower %}
+                <i class="fas fa-oil-can fa-2x text-primary"></i>
+              {% elif "fuel" in s.name|lower %}
+                <i class="fas fa-gas-pump fa-2x text-primary"></i>
+              {% elif "carb" in s.name|lower %}
+                <i class="fas fa-cog fa-2x text-primary"></i>
+              {% elif "throttle" in s.name|lower %}
+                <i class="fas fa-sliders-h fa-2x text-primary"></i>
+              {% else %}
+                <i class="fas fa-wrench fa-2x text-primary"></i>
+              {% endif %}
             </div>
             <h5 class="card-title fw-bold text-center">{{ s.name }}</h5>
             <p class="text-muted small text-center mb-2">{{ s.category.name }}</p>

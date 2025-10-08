@@ -120,9 +120,13 @@
                     <i class="fas fa-shopping-cart me-2"></i>Cart
                   </a></li>
                   <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="/accounts/change-password/">
+                    <i class="fas fa-key me-2"></i>Change Password
+                  </a></li>
                   <li><a class="dropdown-item" href="/admin/" target="_blank">
                     <i class="fas fa-cog me-2"></i>Admin Panel
                   </a></li>
+                  <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="/accounts/logout/" onclick="return confirm('Are you sure you want to logout?')">
                     <i class="fas fa-sign-out-alt me-2"></i>Logout
                   </a></li>
@@ -156,33 +160,105 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-dark text-light py-4 mt-5">
+    <footer class="bg-dark text-light py-5 mt-5" style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%) !important;">
       <div class="container">
-        <div class="row">
-          <div class="col-md-4">
-            <h5><i class="fas fa-motorcycle me-2"></i>Cholonto--Rush</h5>
-            <p class="text-muted">Your trusted partner for on-road bike maintenance and emergency services.</p>
-          </div>
-          <div class="col-md-4">
-            <h6>Quick Links</h6>
-            <ul class="list-unstyled">
-              <li><a href="/services/" class="text-light text-decoration-none">Services</a></li>
-              <li><a href="/centers/" class="text-light text-decoration-none">Service Centers</a></li>
-              <li><a href="/agents/" class="text-light text-decoration-none">Agents</a></li>
-              <li><a href="/cart/" class="text-light text-decoration-none">Cart</a></li>
-            </ul>
-          </div>
-          <div class="col-md-4">
-            <h6>Contact</h6>
-            <p class="text-muted">
-              <i class="fas fa-phone me-2"></i>Emergency: 24/7<br>
-              <i class="fas fa-envelope me-2"></i>support@cholonto-rush.com
-            </p>
+        <!-- Decorative top border -->
+        <div class="text-center mb-4">
+          <div class="d-flex justify-content-center align-items-center">
+            <div class="border-top border-warning" style="width: 100px; height: 2px;"></div>
+            <i class="fas fa-motorcycle fa-2x text-warning mx-3"></i>
+            <div class="border-top border-warning" style="width: 100px; height: 2px;"></div>
           </div>
         </div>
-        <hr class="my-3">
-        <div class="text-center text-muted">
-          <p>&copy; 2024 Cholonto--Rush. All rights reserved.</p>
+        
+        <div class="row">
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="text-center text-lg-start">
+              <h4 class="fw-bold mb-3">
+                <i class="fas fa-motorcycle me-2 text-warning"></i>Cholonto--Rush
+              </h4>
+              <p class="text-light mb-4" style="opacity: 0.9;">Your trusted partner for on-road bike maintenance and emergency services. We're here 24/7 to keep you moving.</p>
+              
+              <!-- Social Media Links -->
+              <div class="d-flex justify-content-center justify-content-lg-start gap-3">
+                <a href="https://github.com/nizamuddinchowdhury-1421" target="_blank" class="btn btn-outline-light btn-sm rounded-circle" style="width: 40px; height: 40px;">
+                  <i class="fab fa-github"></i>
+                </a>
+                <a href="#" target="_blank" class="btn btn-outline-light btn-sm rounded-circle" style="width: 40px; height: 40px;">
+                  <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="mailto:nizamuddinchowdhury1421@gmail.com" class="btn btn-outline-light btn-sm rounded-circle" style="width: 40px; height: 40px;">
+                  <i class="fas fa-envelope"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-lg-2 col-md-6 mb-4">
+            <h6 class="fw-bold mb-3 text-warning">Quick Links</h6>
+            <ul class="list-unstyled">
+              <li class="mb-2"><a href="/" class="text-light text-decoration-none" style="opacity: 0.9; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#ff6b35';" onmouseout="this.style.opacity='0.9'; this.style.color='white';">
+                <i class="fas fa-home me-2 text-warning"></i>Home
+              </a></li>
+              <li class="mb-2"><a href="/services/" class="text-light text-decoration-none" style="opacity: 0.9; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#ff6b35';" onmouseout="this.style.opacity='0.9'; this.style.color='white';">
+                <i class="fas fa-tools me-2 text-warning"></i>Services
+              </a></li>
+              <li class="mb-2"><a href="/centers/" class="text-light text-decoration-none" style="opacity: 0.9; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#ff6b35';" onmouseout="this.style.opacity='0.9'; this.style.color='white';">
+                <i class="fas fa-building me-2 text-warning"></i>Service Centers
+              </a></li>
+              <li class="mb-2"><a href="/agents/" class="text-light text-decoration-none" style="opacity: 0.9; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#ff6b35';" onmouseout="this.style.opacity='0.9'; this.style.color='white';">
+                <i class="fas fa-user-tie me-2 text-warning"></i>Agents
+              </a></li>
+            </ul>
+          </div>
+          
+          <div class="col-lg-3 col-md-6 mb-4">
+            <h6 class="fw-bold mb-3 text-warning">Services</h6>
+            <ul class="list-unstyled">
+              <li class="mb-2 text-light" style="opacity: 0.9;"><i class="fas fa-circle me-2 text-warning"></i>Flat Tyre Fix</li>
+              <li class="mb-2 text-light" style="opacity: 0.9;"><i class="fas fa-battery-half me-2 text-warning"></i>Battery Jumpstart</li>
+              <li class="mb-2 text-light" style="opacity: 0.9;"><i class="fas fa-cog me-2 text-warning"></i>Engine & Oil</li>
+              <li class="mb-2 text-light" style="opacity: 0.9;"><i class="fas fa-gas-pump me-2 text-warning"></i>Fuel Emergency</li>
+            </ul>
+          </div>
+          
+          <div class="col-lg-3 col-md-6 mb-4">
+            <h6 class="fw-bold mb-3 text-warning">Contact Info</h6>
+            <div class="contact-info">
+              <div class="mb-3">
+                <i class="fas fa-phone me-2 text-warning"></i>
+                <a href="tel:+8801799922009" class="text-light text-decoration-none" style="opacity: 0.9; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#ff6b35';" onmouseout="this.style.opacity='0.9'; this.style.color='white';">+880 1799 922 009</a>
+              </div>
+              <div class="mb-3">
+                <i class="fas fa-envelope me-2 text-warning"></i>
+                <a href="mailto:nizamuddinchowdhury1421@gmail.com" class="text-light text-decoration-none" style="opacity: 0.9; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#ff6b35';" onmouseout="this.style.opacity='0.9'; this.style.color='white';">nizamuddinchowdhury1421@gmail.com</a>
+              </div>
+              <div class="mb-3">
+                <i class="fab fa-github me-2 text-warning"></i>
+                <a href="https://github.com/nizamuddinchowdhury-1421" target="_blank" class="text-light text-decoration-none" style="opacity: 0.9; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#ff6b35';" onmouseout="this.style.opacity='0.9'; this.style.color='white';">GitHub Profile</a>
+              </div>
+              <div class="mb-3">
+                <i class="fas fa-clock me-2 text-warning"></i>
+                <span class="text-light" style="opacity: 0.9;">24/7 Emergency Service</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Decorative separator -->
+        <div class="text-center my-4">
+          <div class="d-flex justify-content-center align-items-center">
+            <div class="border-top border-warning" style="width: 50px; height: 1px;"></div>
+            <i class="fas fa-star text-warning mx-3"></i>
+            <div class="border-top border-warning" style="width: 50px; height: 1px;"></div>
+          </div>
+        </div>
+        
+        <div class="text-center">
+          <p class="text-light mb-0" style="opacity: 0.8;">
+            <i class="fas fa-copyright me-1 text-warning"></i>2024 Cholonto--Rush. All rights reserved. | 
+            <span class="text-warning">Made with <i class="fas fa-heart text-danger"></i> in Bangladesh</span>
+          </p>
         </div>
       </div>
     </footer>
