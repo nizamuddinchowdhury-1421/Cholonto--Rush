@@ -53,7 +53,7 @@ def custom_login(request):
 
 
 def custom_logout(request):
-    """Custom logout view that handles GET requests"""
+
     try:
         print(f"Logout view called. User authenticated: {request.user.is_authenticated}")
         if request.user.is_authenticated:
@@ -69,7 +69,7 @@ def custom_logout(request):
         return redirect('login')
 
 def password_reset(request):
-    """Password reset form view"""
+
     if request.method == 'POST':
         form = PasswordResetForm(request.POST)
         if form.is_valid():
@@ -81,10 +81,10 @@ def password_reset(request):
                 uid = urlsafe_base64_encode(force_bytes(user.pk))
                 current_site = get_current_site(request)
                 
-                # Create reset URL
+
                 reset_url = f"http://{current_site.domain}/accounts/reset/{uid}/{token}/"
                 
-                # Send email
+
                 subject = 'Password Reset - Cholonto--Rush'
                 message = f"""
                 Hello {user.username},
@@ -112,12 +112,12 @@ def password_reset(request):
 
 
 def password_reset_done(request):
-    """Password reset done view"""
+
     return render(request, 'registration/password_reset_done.html')
 
 
 def password_reset_confirm(request, uidb64, token):
-    """Password reset confirm view"""
+
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
         user = User.objects.get(pk=uid)
@@ -141,15 +141,14 @@ def password_reset_confirm(request, uidb64, token):
 
 
 def password_reset_complete(request):
-    """Password reset complete view"""
+
     return render(request, 'registration/password_reset_complete.html')
 
 
 def debug_logout(request):
-    """Debug view to test logout functionality"""
+
     return render(request, 'debug_logout.html', {
         'user_authenticated': request.user.is_authenticated,
         'username': request.user.username if request.user.is_authenticated else 'Anonymous',
     })
 
-# Create your views here.
