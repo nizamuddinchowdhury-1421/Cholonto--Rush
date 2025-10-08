@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% block title %}Payment - Cholonto--Rush{% endblock %}
+{% block content %}
+  <div class="text-center mb-5">
+    <h1 class="display-4 fw-bold mb-3">
+      <i class="fas fa-credit-card me-3 text-primary"></i>Payment
+    </h1>
+    <p class="lead text-muted">Complete your payment to confirm your service booking</p>
+  </div>
+  
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">
+            <i class="fas fa-lock me-2"></i>Secure Payment
+          </h5>
+        </div>
+        <div class="card-body p-4">
+          <div class="text-center mb-4">
+            <h4 class="fw-bold">Total Amount</h4>
+            <h2 class="text-primary">৳{{ total|default:"500" }}</h2>
+          </div>
+          
+          <form id="paymentForm">
+            <div class="mb-4">
+              <label class="form-label fw-bold">Payment Method</label>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="card border-2 payment-option" data-method="bkash">
+                    <div class="card-body text-center">
+                      <i class="fas fa-mobile-alt fa-2x text-success mb-2"></i>
+                      <h6 class="fw-bold">bKash</h6>
+                      <small class="text-muted">Mobile Payment</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card border-2 payment-option" data-method="nagad">
+                    <div class="card-body text-center">
+                      <i class="fas fa-wallet fa-2x text-warning mb-2"></i>
+                      <h6 class="fw-bold">Nagad</h6>
+                      <small class="text-muted">Digital Wallet</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card border-2 payment-option" data-method="rocket">
+                    <div class="card-body text-center">
+                      <i class="fas fa-rocket fa-2x text-info mb-2"></i>
+                      <h6 class="fw-bold">Rocket</h6>
+                      <small class="text-muted">Mobile Banking</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card border-2 payment-option" data-method="card">
+                    <div class="card-body text-center">
+                      <i class="fas fa-credit-card fa-2x text-primary mb-2"></i>
+                      <h6 class="fw-bold">Card</h6>
+                      <small class="text-muted">Credit/Debit Card</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-4">
+              <label class="form-label fw-bold">Phone Number</label>
+              <input type="tel" class="form-control" placeholder="01XXXXXXXXX" required>
+            </div>
+            
+            <div class="mb-4">
+              <label class="form-label fw-bold">Transaction ID (Optional)</label>
+              <input type="text" class="form-control" placeholder="Enter transaction ID if available">
+            </div>
+            
+            <div class="d-grid">
+              <button type="submit" class="btn btn-success btn-lg" id="payBtn">
+                <i class="fas fa-lock me-2"></i>Pay Now
+              </button>
+            </div>
+          </form>
+          
+          <div class="text-center mt-4">
+            <small class="text-muted">
+              <i class="fas fa-shield-alt me-1"></i>Your payment is secure and encrypted
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Payment option selection
+  document.querySelectorAll('.payment-option').forEach(option => {
+    option.addEventListener('click', function() {
+      document.querySelectorAll('.payment-option').forEach(opt => {
+        opt.classList.remove('border-primary', 'bg-primary', 'text-white');
+        opt.classList.add('border-light');
+      });
+      this.classList.remove('border-light');
+      this.classList.add('border-primary', 'bg-primary', 'text-white');
+    });
+  });
+  
+  // Payment form submission
+  document.getElementById('paymentForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const payBtn = document.getElementById('payBtn');
+    payBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing Payment...';
+    payBtn.disabled = true;
+    
+    // Simulate payment processing
+    setTimeout(() => {
+      window.location.href = '/orders/payment-success/';
+    }, 3000);
+  });
+</script>
+
+<style>
+  .payment-option {
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .payment-option:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  .payment-option.border-primary {
+    border-color: #ff6b35 !important;
+  }
+</style>
+{% endblock %}

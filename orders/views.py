@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
+from django.contrib import messages
 from cart.models import CartItem
 from agents.models import Agent
 from math import asin, sqrt, sin, cos, pi
@@ -24,10 +25,14 @@ def book_services(request):
     center_id = request.POST.get('center_id')
     lat = request.POST.get('lat')
     lng = request.POST.get('lng')
+    payment_method = request.POST.get('payment_method', 'cash')
     center = ServiceCenter.objects.filter(pk=center_id).first()
     items = CartItem.objects.filter(cart__user=request.user).select_related('service')
     total = sum([it.quantity * it.service.base_price for it in items])
-    order = Order.objects.create(user=request.user, center=center, total_amount=total, status='pending')
+    
+    # Set order status based on payment method
+    status = 'confirmed' if payment_method == 'cash' else 'pending'
+    order = Order.objects.create(user=request.user, center=center, total_amount=total, status=status)
     # Assign nearest agent if user location present
     try:
         lat_f = float(lat)
@@ -57,7 +62,13 @@ def book_services(request):
     for it in items:
         OrderItem.objects.create(order=order, service=it.service, quantity=it.quantity, price=it.service.base_price)
     items.delete()
-    return redirect('home')
+    
+    # Redirect based on payment method
+    if payment_method == 'cash':
+        messages.success(request, 'Service booked successfully! You will pay cash when the service is provided.')
+        return redirect('my_orders')
+    else:
+        return redirect('payment')
 
 @login_required
 def my_orders(request):
@@ -71,3 +82,25 @@ def order_detail(request, order_id: int):
     if not order:
         return redirect('my_orders')
     return render(request, 'orders/order_detail.html', {'order': order})
+
+
+@login_required
+def payment(request):
+    items = CartItem.objects.filter(cart__user=request.user).select_related('service')
+    total = sum([it.quantity * it.service.base_price for it in items])
+    return render(request, 'orders/payment.html', {'total': total})
+
+
+@login_required
+def payment_success(request):
+    # Get the latest pending order for this user and mark it as confirmed
+    latest_order = Order.objects.filter(user=request.user, status='pending').order_by('-created_at').first()
+    if latest_order:
+        latest_order.status = 'confirmed'
+        latest_order.save()
+        messages.success(request, 'Payment successful! Your service booking has been confirmed.')
+    
+    return render(request, 'orders/payment_success.html', {
+        'order_id': latest_order.id if latest_order else '12345',
+        'total': latest_order.total_amount if latest_order else 500
+    })

@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% block title %}Payment Successful - Cholonto--Rush{% endblock %}
+{% block content %}
+  <div class="text-center py-5">
+    <div class="container">
+      <!-- Payment Success GIF -->
+      <div class="mb-4">
+        <img src="https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif" 
+             alt="Payment Success" 
+             class="img-fluid rounded-circle shadow" 
+             style="width: 200px; height: 200px; object-fit: cover;">
+      </div>
+      
+      <!-- Success Message -->
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card shadow-sm border-0">
+            <div class="card-body p-5">
+              <div class="mb-4">
+                <i class="fas fa-check-circle fa-4x text-success mb-3"></i>
+                <h1 class="display-4 fw-bold text-success mb-3">Payment Successful!</h1>
+                <p class="lead text-muted">Your service booking has been confirmed</p>
+              </div>
+              
+              <!-- Order Details -->
+              <div class="row mb-4">
+                <div class="col-md-6">
+                  <div class="card bg-light">
+                    <div class="card-body text-center">
+                      <i class="fas fa-receipt fa-2x text-primary mb-2"></i>
+                      <h6 class="fw-bold">Order ID</h6>
+                      <p class="mb-0">#{{ order_id|default:"12345" }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card bg-light">
+                    <div class="card-body text-center">
+                      <i class="fas fa-money-bill-wave fa-2x text-success mb-2"></i>
+                      <h6 class="fw-bold">Amount Paid</h6>
+                      <p class="mb-0">৳{{ total|default:"500" }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Service Details -->
+              <div class="alert alert-info">
+                <h5 class="alert-heading">
+                  <i class="fas fa-info-circle me-2"></i>What's Next?
+                </h5>
+                <ul class="mb-0">
+                  <li>Our service team will contact you within 30 minutes</li>
+                  <li>You'll receive SMS confirmation with agent details</li>
+                  <li>Service will be provided at your selected location</li>
+                  <li>You can track your order status in "My Orders"</li>
+                </ul>
+              </div>
+              
+              <!-- Action Buttons -->
+              <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="/orders/my/" class="btn btn-primary btn-lg">
+                  <i class="fas fa-list-alt me-2"></i>View My Orders
+                </a>
+                <a href="/services/" class="btn btn-outline-primary btn-lg">
+                  <i class="fas fa-tools me-2"></i>Browse More Services
+                </a>
+                <a href="/" class="btn btn-outline-secondary btn-lg">
+                  <i class="fas fa-home me-2"></i>Go Home
+                </a>
+              </div>
+              
+              <!-- Contact Info -->
+              <div class="mt-4 pt-4 border-top">
+                <h6 class="text-muted mb-3">Need Help?</h6>
+                <div class="row text-center">
+                  <div class="col-md-4">
+                    <i class="fas fa-phone text-primary mb-2"></i>
+                    <p class="small mb-0">Call: +880-123-456-789</p>
+                  </div>
+                  <div class="col-md-4">
+                    <i class="fas fa-envelope text-primary mb-2"></i>
+                    <p class="small mb-0">Email: support@cholonto-rush.com</p>
+                  </div>
+                  <div class="col-md-4">
+                    <i class="fas fa-clock text-primary mb-2"></i>
+                    <p class="small mb-0">24/7 Support</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Add some celebration animation
+  document.addEventListener('DOMContentLoaded', function() {
+    // Confetti effect (simple version)
+    const colors = ['#ff6b35', '#f7931e', '#28a745', '#007bff'];
+    const confetti = document.createElement('div');
+    confetti.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1000;
+    `;
+    document.body.appendChild(confetti);
+    
+    for (let i = 0; i < 50; i++) {
+      setTimeout(() => {
+        const particle = document.createElement('div');
+        particle.style.cssText = `
+          position: absolute;
+          width: 10px;
+          height: 10px;
+          background: ${colors[Math.floor(Math.random() * colors.length)]};
+          left: ${Math.random() * 100}%;
+          animation: confetti-fall 3s linear forwards;
+        `;
+        confetti.appendChild(particle);
+        
+        setTimeout(() => particle.remove(), 3000);
+      }, i * 50);
+    }
+    
+    // Add CSS animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes confetti-fall {
+        0% {
+          transform: translateY(-100vh) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(100vh) rotate(720deg);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    // Remove confetti container after animation
+    setTimeout(() => confetti.remove(), 5000);
+  });
+</script>
+{% endblock %}

@@ -1,23 +1,69 @@
 {% extends 'base.html' %}
 {% block title %}Service Centers - Cholonto--Rush{% endblock %}
 {% block content %}
-  <h1 class="mb-3">Service Centers</h1>
-  <p class="text-muted">Share location to find nearest center.</p>
-  <button id="locateBtn" class="btn btn-primary mb-3">Use my location</button>
-  <div id="nearest" class="alert alert-info d-none"></div>
-  <ul class="list-group">
-    {% for c in centers %}
-      <li class="list-group-item">
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <strong>{{ c.name }}</strong>
-            <div class="small text-muted">{{ c.address }} | {{ c.phone }}</div>
-          </div>
-          <a class="btn btn-outline-success" href="tel:{{ c.phone }}">Call</a>
+  <div class="text-center mb-5">
+    <h1 class="display-4 fw-bold mb-3">
+      <i class="fas fa-building me-3 text-primary"></i>Service Centers
+    </h1>
+    <p class="lead text-muted">Find the nearest service center to your location</p>
+  </div>
+  
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body text-center">
+          <i class="fas fa-map-marker-alt fa-2x text-primary mb-3"></i>
+          <h5 class="card-title">Find Nearest Center</h5>
+          <p class="card-text text-muted">Use your current location to find the closest service center</p>
+          <button id="locateBtn" class="btn btn-primary">
+            <i class="fas fa-location-arrow me-2"></i>Use My Location
+          </button>
         </div>
-      </li>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div id="nearest" class="alert alert-info d-none">
+        <i class="fas fa-info-circle me-2"></i>
+        <span id="nearestContent"></span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row">
+    {% for c in centers %}
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body">
+            <div class="d-flex align-items-start mb-3">
+              <i class="fas fa-building fa-2x text-primary me-3"></i>
+              <div class="flex-grow-1">
+                <h5 class="card-title fw-bold mb-1">{{ c.name }}</h5>
+                <p class="text-muted small mb-2">
+                  <i class="fas fa-map-marker-alt me-1"></i>{{ c.address }}
+                </p>
+                <p class="text-muted small mb-0">
+                  <i class="fas fa-phone me-1"></i>{{ c.phone }}
+                </p>
+              </div>
+            </div>
+            <div class="d-grid">
+              <a class="btn btn-success" href="tel:{{ c.phone }}">
+                <i class="fas fa-phone me-2"></i>Call Now
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12">
+        <div class="text-center py-5">
+          <i class="fas fa-building fa-3x text-muted mb-3"></i>
+          <h3 class="text-muted">No service centers available</h3>
+          <p class="text-muted">Please check back later for available centers.</p>
+        </div>
+      </div>
     {% endfor %}
-  </ul>
+  </div>
 {% endblock %}
 {% block scripts %}
 <script>
@@ -38,8 +84,9 @@
       let best=null;let bestD=1e9;
       centers.forEach(c=>{const d=distanceKm(me,{lat:c.lat,lng:c.lng});if(d<bestD){bestD=d;best=c;}});
       const el=document.getElementById('nearest');
+      const content=document.getElementById('nearestContent');
       el.classList.remove('d-none');
-      el.innerHTML=`Nearest: <strong>${best.name}</strong> ~ ${bestD.toFixed(1)} km away <a class="btn btn-sm btn-success ms-2" href="tel:${best.phone}">Call</a>`;
+      content.innerHTML=`<strong>${best.name}</strong> ~ ${bestD.toFixed(1)} km away <a class="btn btn-sm btn-success ms-2" href="tel:${best.phone}">Call</a>`;
     });
   };
 </script>

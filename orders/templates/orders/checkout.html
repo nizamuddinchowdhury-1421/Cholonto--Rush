@@ -1,43 +1,140 @@
 {% extends 'base.html' %}
 {% block title %}Checkout - Cholonto--Rush{% endblock %}
 {% block content %}
-  <h1 class="mb-3">Checkout</h1>
+  <div class="text-center mb-5">
+    <h1 class="display-4 fw-bold mb-3">
+      <i class="fas fa-credit-card me-3 text-primary"></i>Checkout
+    </h1>
+    <p class="lead text-muted">Complete your service booking</p>
+  </div>
+  
   <div class="row g-4">
-    <div class="col-md-7">
-      <ul class="list-group mb-3">
-        {% for it in items %}
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            <div>
-              <strong>{{ it.service.name }}</strong>
-              <div class="small text-muted">Qty {{ it.quantity }} × ৳{{ it.service.base_price }}</div>
-            </div>
-            <span>₹{{ it.line_total }}</span>
-          </li>
-        {% empty %}
-          <li class="list-group-item">No items in cart.</li>
-        {% endfor %}
-        <li class="list-group-item d-flex justify-content-between">
-          <strong>Total</strong>
-          <strong>৳{{ total }}</strong>
-        </li>
-      </ul>
-    </div>
-    <div class="col-md-5">
-      <form method="post" action="/orders/book/">
-        {% csrf_token %}
-        <div class="mb-3">
-          <label class="form-label">Select Service Center</label>
-          <select name="center_id" id="centerSelect" class="form-select" required>
-            {% for c in centers %}
-              <option value="{{ c.id }}">{{ c.name }} — {{ c.address }}</option>
-            {% endfor %}
-          </select>
+    <div class="col-lg-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-light">
+          <h5 class="mb-0">
+            <i class="fas fa-shopping-cart me-2"></i>Order Summary
+          </h5>
         </div>
-        <input type="hidden" name="lat" id="latField">
-        <input type="hidden" name="lng" id="lngField">
-        <button class="btn btn-primary w-100" type="submit">Book Services</button>
-      </form>
-      <button id="autoNearest" class="btn btn-outline-secondary w-100 mt-2" type="button">Use my nearest center</button>
+        <div class="card-body p-0">
+          {% if items %}
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th><i class="fas fa-tools me-2"></i>Service</th>
+                    <th><i class="fas fa-hashtag me-2"></i>Qty</th>
+                    <th><i class="fas fa-tag me-2"></i>Price</th>
+                    <th><i class="fas fa-calculator me-2"></i>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for it in items %}
+                    <tr>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <i class="fas fa-wrench text-primary me-3"></i>
+                          <div>
+                            <h6 class="mb-0 fw-bold">{{ it.service.name }}</h6>
+                            <small class="text-muted">{{ it.service.category.name }}</small>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <span class="badge bg-primary">{{ it.quantity }}</span>
+                      </td>
+                      <td class="fw-bold">৳{{ it.service.base_price }}</td>
+                      <td class="fw-bold text-primary">৳{{ it.line_total }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+                <tfoot class="table-light">
+                  <tr>
+                    <th colspan="3" class="text-end">Total Amount:</th>
+                    <th class="h5 text-primary">৳{{ total }}</th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          {% else %}
+            <div class="text-center py-5">
+              <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+              <h5 class="text-muted">No items in cart</h5>
+              <p class="text-muted">Add some services to proceed with checkout.</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-lg-4">
+      <div class="card shadow-sm border-0 sticky-top">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">
+            <i class="fas fa-map-marker-alt me-2"></i>Select Service Center
+          </h5>
+        </div>
+        <div class="card-body">
+          <form method="post" action="/orders/book/">
+            {% csrf_token %}
+            <div class="mb-4">
+              <label class="form-label fw-bold">Choose Service Center</label>
+              <select name="center_id" id="centerSelect" class="form-select" required>
+                <option value="">Select a center...</option>
+                {% for c in centers %}
+                  <option value="{{ c.id }}">{{ c.name }} — {{ c.address }}</option>
+                {% endfor %}
+              </select>
+              <div class="form-text">
+                <i class="fas fa-info-circle me-1"></i>Choose the center closest to your location
+              </div>
+            </div>
+            
+            <div class="mb-4">
+              <label class="form-label fw-bold">Payment Method</label>
+              <div class="row g-2">
+                <div class="col-6">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="payment_method" id="cash" value="cash" checked>
+                    <label class="form-check-label" for="cash">
+                      <i class="fas fa-money-bill-wave me-2 text-success"></i>Cash on Service
+                    </label>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="payment_method" id="online" value="online">
+                    <label class="form-check-label" for="online">
+                      <i class="fas fa-credit-card me-2 text-primary"></i>Online Payment
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-text">
+                <i class="fas fa-info-circle me-1"></i>Choose your preferred payment method
+              </div>
+            </div>
+            
+            <input type="hidden" name="lat" id="latField">
+            <input type="hidden" name="lng" id="lngField">
+            
+            <div class="d-grid gap-2">
+              <button class="btn btn-success btn-lg" type="submit" id="bookBtn">
+                <i class="fas fa-check-circle me-2"></i>Book Services
+              </button>
+              <button id="autoNearest" class="btn btn-outline-primary" type="button">
+                <i class="fas fa-location-arrow me-2"></i>Use Nearest Center
+              </button>
+            </div>
+            
+            <div class="text-center mt-3">
+              <small class="text-muted">
+                <i class="fas fa-shield-alt me-1"></i>Secure booking process
+              </small>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 {% endblock %}
@@ -71,6 +168,23 @@
       document.getElementById('lngField').value=pos.coords.longitude;
     });
   }
+  
+  // Handle payment method selection
+  document.querySelector('form').addEventListener('submit', function(e) {
+    const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
+    const bookBtn = document.getElementById('bookBtn');
+    
+    if (paymentMethod === 'online') {
+      e.preventDefault();
+      bookBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+      bookBtn.disabled = true;
+      
+      // Simulate payment processing
+      setTimeout(() => {
+        window.location.href = '/orders/payment/';
+      }, 2000);
+    }
+  });
 </script>
 {% endblock %}
 

@@ -50,72 +50,110 @@
     </button>
   </div>
 
-  <header class="py-5 bg-primary text-white text-center rounded-3">
+  <header class="py-5 text-white text-center rounded-3" style="background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);">
     <div class="container">
-      <h1 class="display-5 fw-bold">On-Road Bike Maintenance & Rescue</h1>
-      <p class="lead">Find the nearest service center and get help fast.</p>
-      <a href="/services/" class="btn btn-light btn-lg">Browse Services</a>
+      <h1 class="display-5 fw-bold mb-3">
+        <i class="fas fa-motorcycle me-3"></i>On-Road Bike Maintenance & Rescue
+      </h1>
+      <p class="lead mb-4">Find the nearest service center and get help fast. Professional mechanics at your location.</p>
+      <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="/services/" class="btn btn-light btn-lg">
+          <i class="fas fa-tools me-2"></i>Browse Services
+        </a>
+        <a href="/centers/" class="btn btn-outline-light btn-lg">
+          <i class="fas fa-map-marker-alt me-2"></i>Find Centers
+        </a>
+      </div>
     </div>
   </header>
 
   <section class="my-5">
+    <div class="text-center mb-5">
+      <h2 class="h1 fw-bold mb-3">Our Services</h2>
+      <p class="lead text-muted">Professional bike maintenance services at your location</p>
+    </div>
     <div class="row g-4">
       <div class="col-md-4">
-        <div class="card h-100">
-          <div class="card-body">
-            <img src="{% static 'img/Tire Change.png' %}" width="1200" height="200"  class="d-block w-100" alt="banner image">
-
-            <h5 class="card-title">Flat Tyre Fix</h5>
-            <p class="card-text">Quick puncture repair and tube replacement on the spot.</p>
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body text-center p-4">
+            <div class="mb-3">
+              <i class="fas fa-tire fa-3x text-primary"></i>
+            </div>
+            <h5 class="card-title fw-bold">Flat Tyre Fix</h5>
+            <p class="card-text text-muted">Quick puncture repair and tube replacement on the spot.</p>
+            <a href="/services/" class="btn btn-outline-primary">
+              <i class="fas fa-arrow-right me-1"></i>Learn More
+            </a>
           </div>
         </div>
       </div>
       <div class="col-md-4">
-        <div class="card h-100">
-          <div class="card-body">
-            <img src="{% static 'img/b.png' %}" width="1200" height="200"  class="d-block w-100" alt="banner image">
-
-            <h5 class="card-title">Battery Jumpstart</h5>
-            <p class="card-text">Emergency jumpstart and battery health check.</p>
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body text-center p-4">
+            <div class="mb-3">
+              <i class="fas fa-battery-half fa-3x text-warning"></i>
+            </div>
+            <h5 class="card-title fw-bold">Battery Jumpstart</h5>
+            <p class="card-text text-muted">Emergency jumpstart and battery health check.</p>
+            <a href="/services/" class="btn btn-outline-primary">
+              <i class="fas fa-arrow-right me-1"></i>Learn More
+            </a>
           </div>
         </div>
       </div>
       <div class="col-md-4">
-        <div class="card h-100">
-          <div class="card-body">
-            <img src="{% static 'img/a1.jpg' %}" width="1200" height="200"  class="d-block w-100" alt="banner image">
-
-            <h5 class="card-title">Engine & Oil</h5>
-            <p class="card-text">Oil top-up and minor engine diagnostics roadside.</p>
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body text-center p-4">
+            <div class="mb-3">
+              <i class="fas fa-cog fa-3x text-info"></i>
+            </div>
+            <h5 class="card-title fw-bold">Engine & Oil</h5>
+            <p class="card-text text-muted">Oil top-up and minor engine diagnostics roadside.</p>
+            <a href="/services/" class="btn btn-outline-primary">
+              <i class="fas fa-arrow-right me-1"></i>Learn More
+            </a>
           </div>
         </div>
       </div>
        <div class="col-md-4">
-        <div class="card h-100">
-          <div class="card-body">
-            <img src="{% static 'img/Bike_4.png' %}" width="1200" height="200"  class="d-block w-100" alt="banner image">
-            <h5 class="card-title">Carborator Modify</h5>
-            <p class="card-text">Modify Carborators to speed up.</p>
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body text-center p-4">
+            <div class="mb-3">
+              <i class="fas fa-tachometer-alt fa-3x text-danger"></i>
+            </div>
+            <h5 class="card-title fw-bold">Carburetor Modify</h5>
+            <p class="card-text text-muted">Modify carburetors to speed up performance.</p>
+            <a href="/services/" class="btn btn-outline-primary">
+              <i class="fas fa-arrow-right me-1"></i>Learn More
+            </a>
           </div>
         </div>
       </div>
         <div class="col-md-4">
-        <div class="card h-100">
-          <div class="card-body">
-            <img src="{% static 'img/Throttle Fix.png' %}" width="1200" height="200"  class="d-block w-100" alt="banner image">
-
-            <h5 class="card-title">Throttle Fix</h5>
-            <p class="card-text">Make the throttle smooth like butter.</p>
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body text-center p-4">
+            <div class="mb-3">
+              <i class="fas fa-hand-paper fa-3x text-success"></i>
+            </div>
+            <h5 class="card-title fw-bold">Throttle Fix</h5>
+            <p class="card-text text-muted">Make the throttle smooth like butter.</p>
+            <a href="/services/" class="btn btn-outline-primary">
+              <i class="fas fa-arrow-right me-1"></i>Learn More
+            </a>
           </div>
         </div>
       </div>
         <div class="col-md-4">
-        <div class="card h-100">
-          <div class="card-body">
-            <img src="{% static 'img/Fuel Emergency.png' %}" width="1200" height="200"  class="d-block w-100" alt="banner image">
-
-            <h5 class="card-title">Fuel Emergency</h5>
-            <p class="card-text">Fill your tank with the oil always.</p>
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body text-center p-4">
+            <div class="mb-3">
+              <i class="fas fa-gas-pump fa-3x text-secondary"></i>
+            </div>
+            <h5 class="card-title fw-bold">Fuel Emergency</h5>
+            <p class="card-text text-muted">Emergency fuel delivery to your location.</p>
+            <a href="/services/" class="btn btn-outline-primary">
+              <i class="fas fa-arrow-right me-1"></i>Learn More
+            </a>
           </div>
         </div>
       </div>

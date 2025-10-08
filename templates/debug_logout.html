@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Debug Logout - Cholonto--Rush{% endblock %}
+{% block content %}
+  <div class="container">
+    <h1>Debug Logout Test</h1>
+    <div class="alert alert-info">
+      <h4>Current Status:</h4>
+      <p><strong>User Authenticated:</strong> {{ user_authenticated }}</p>
+      <p><strong>Username:</strong> {{ username }}</p>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5>Test Logout</h5>
+            <a href="/accounts/logout/" class="btn btn-danger" onclick="return confirm('Are you sure?')">
+              <i class="fas fa-sign-out-alt me-2"></i>Test Logout
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5>Go to Login</h5>
+            <a href="/accounts/login/" class="btn btn-primary">
+              <i class="fas fa-sign-in-alt me-2"></i>Go to Login
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
