@@ -55,12 +55,17 @@ def book_services(request):
                 best = ag
         if best:
             order.assigned_agent = best
-            order.status = 'assigned'
-            order.save()
+            # Only change status to 'assigned' for cash payments
+            # Keep 'pending' status for online payments until payment is completed
+            if payment_method == 'cash':
+                order.status = 'assigned'
+                order.save()
     except (TypeError, ValueError):
         pass
     for it in items:
         OrderItem.objects.create(order=order, service=it.service, quantity=it.quantity, price=it.service.base_price)
+    
+    # Clear cart items after creating order (for both cash and online payments)
     items.delete()
     
     # Redirect based on payment method
@@ -86,21 +91,65 @@ def order_detail(request, order_id: int):
 
 @login_required
 def payment(request):
-    items = CartItem.objects.filter(cart__user=request.user).select_related('service')
-    total = sum([it.quantity * it.service.base_price for it in items])
-    return render(request, 'orders/payment.html', {'total': total})
+    # Get the latest pending order for this user (cart is already cleared)
+    latest_pending_order = Order.objects.filter(user=request.user, status='pending').order_by('-created_at').first()
+    
+    if latest_pending_order:
+        total = latest_pending_order.total_amount
+        order = latest_pending_order
+    else:
+        # Fallback: try to calculate from cart items if no pending order found
+        items = CartItem.objects.filter(cart__user=request.user).select_related('service')
+        total = sum([it.quantity * it.service.base_price for it in items])
+        order = None
+    
+    return render(request, 'orders/payment.html', {'total': total, 'order': order})
 
 
 @login_required
 def payment_success(request):
     # Get the latest pending order for this user and mark it as confirmed
-    latest_order = Order.objects.filter(user=request.user, status='pending').order_by('-created_at').first()
-    if latest_order:
-        latest_order.status = 'confirmed'
-        latest_order.save()
-        messages.success(request, 'Payment successful! Your service booking has been confirmed.')
+    latest_pending_order = Order.objects.filter(user=request.user, status='pending').order_by('-created_at').first()
     
-    return render(request, 'orders/payment_success.html', {
-        'order_id': latest_order.id if latest_order else '12345',
-        'total': latest_order.total_amount if latest_order else 500
-    })
+    if latest_pending_order:
+        # Mark as confirmed
+        latest_pending_order.status = 'confirmed'
+        latest_pending_order.save()
+        
+        # Clear cart items to ensure cart is empty after payment success
+        CartItem.objects.filter(cart__user=request.user).delete()
+        
+        # Debug logging
+        print(f"Payment Success - Pending Order: #{latest_pending_order.id}, Amount: {latest_pending_order.total_amount}")
+        for item in latest_pending_order.items.all():
+            print(f"  - {item.service.name}: {item.quantity} x Tk {item.price} = Tk {item.line_total()}")
+        
+        messages.success(request, 'Payment successful! Your service booking has been confirmed.')
+        
+        return render(request, 'orders/payment_success.html', {
+            'order_id': latest_pending_order.id,
+            'total': latest_pending_order.total_amount,
+            'order': latest_pending_order
+        })
+    else:
+        # If no pending order found, check for the most recent order (might already be confirmed)
+        latest_order = Order.objects.filter(user=request.user).order_by('-created_at').first()
+        if latest_order:
+            # Clear cart items to ensure cart is empty after payment success
+            CartItem.objects.filter(cart__user=request.user).delete()
+            
+            # Debug logging
+            print(f"Payment Success - Fallback Order: #{latest_order.id}, Amount: {latest_order.total_amount}")
+            for item in latest_order.items.all():
+                print(f"  - {item.service.name}: {item.quantity} x Tk {item.price} = Tk {item.line_total()}")
+            
+            messages.success(request, 'Payment successful! Your service booking has been confirmed.')
+            return render(request, 'orders/payment_success.html', {
+                'order_id': latest_order.id,
+                'total': latest_order.total_amount,
+                'order': latest_order
+            })
+        else:
+            # If no orders found at all, redirect to orders page
+            messages.error(request, 'No order found. Please try again.')
+            return redirect('my_orders')

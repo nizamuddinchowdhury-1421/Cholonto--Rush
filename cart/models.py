@@ -11,6 +11,11 @@ class Cart(models.Model):
 
     def __str__(self) -> str:
         return f"Cart of {self.user.get_username()}"
+    
+    @property
+    def total(self):
+        """Calculate total amount for all items in cart"""
+        return sum(item.line_total() for item in self.items.all())
 
 
 class CartItem(models.Model):
