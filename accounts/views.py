@@ -169,5 +169,7 @@ def debug_logout(request):
     return render(request, 'debug_logout.html', {
         'user_authenticated': request.user.is_authenticated,
         'username': request.user.username if request.user.is_authenticated else 'Anonymous',
+
     })
 
+#jhfjhhjjhguiygui
